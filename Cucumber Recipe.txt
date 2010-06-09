@@ -1,0 +1,159 @@
+$ cucumber --tag @focus
+$ rails g model movie showtime_date:date showtime_time:time
+$ rake db:migrate && rake db:test:prepare 
+
+class Movie < ActiveRecord::Base
+  def showtime 
+    "#{formatted_date} (#{formatted_time})"
+  end
+
+  def formatted_date 
+    showtime_date.strftime("%B %d, %Y")
+  end
+
+  def formatted_time 
+    format_string = showtime_time.min.zero? ? "%l%p" : "%l:%M%p" 
+    showtime_time.strftime(format_string).strip.downcase
+  end
+end
+
+$ rails g model genre name:string
+$ rake db:migrate && rake db:test:prepare
+
+$ rails g controller Movies index new
+
+class MoviesController < ApplicationController
+  def index
+  end
+
+  def new
+    @movie = Movie.new
+    @genres = Genre.all
+  end
+  
+  def create
+    redirect_to movies_path
+  end
+end
+
+# movies/index.html.erb
+<%= link_to "Add Movie", new_movie_path %>
+
+# movies/new.html.erb
+<%= link_to "Add Movie", new_movie_path %>
+<% form_for @movie do |f| %>
+  <label>
+    Title
+    <%= f.text_field :title %>
+  </label>
+  
+  <label>
+    Release Year
+    <%= f.select :release_year, (1900..2009).to_a.map(&:to_s) %>
+  </label>
+  
+  <% @genres.each do |genre| %>
+    <label>
+      <%=h genre.name %>
+      <%= check_box_tag "genres[]", genre.id %>
+    </label>
+  <% end %>
+  
+  <%= f.submit "Save"   %>
+<% end %>
+
+# routes.rb
+  resources :products, :movies
+
+$ rails g migration add_title_to_movies title:string
+$ rails g migration add_release_year_to_movies release_year:date
+$ rake db:migrate && rake db:test:prepare
+
+$ rails g migration create_genres_movies
+
+class CreateGenresMovies < ActiveRecord::Migration
+  def self.up
+    create_table :genres_movies, :id => false, :force => true do |t|
+      t.integer :genre_id
+      t.integer :movie_id
+      t.timestamps
+    end
+  end
+
+  def self.down
+    drop_table :genres_movies
+  end
+end
+
+$ rails g controller Genres index show
+
+class GenresController < ApplicationController
+  
+  def index
+    @genres = Genre.all
+  end
+  
+  def show
+    @genre = Genre.find(params[:id])
+  end
+  
+end
+
+# routes.rb
+  resources :products, :movies, :genres 
+
+# genres/index.html.erb   
+<% @genres.each do |genre| %>
+  <%= link_to genre.name, genre %>
+<% end %>
+
+# genres/show.html.erb   
+<%=h @genre.name %>
+
+<%= @genre.movies.count %> movie
+
+<% @genre.movies.each do |movie| %>
+  <%= link_to movie.title, movie %>
+<% end %>
+  
+# movies_controller.rb
+
+def create
+  movie = Movie.create!(params[:movie])
+  genres = Genre.find(params[:genres])
+  movie.genres = genres
+  movie.save!
+  redirect_to movies_path
+end
+
+# models/genre.rb
+class Genre < ActiveRecord::Base
+  has_and_belongs_to_many :movies
+end
+
+# models/movie.rb
+class Movie < ActiveRecord::Base
+  has_and_belongs_to_many :genres
+  # ...
+end
+
+$ rails c
+
+> Genre.create(name:"Comedy")
+> exit
+
+
+# movie_steps.rb
+
+Then /^Caddyshack should be in the Comedy genre$/ do
+  visit genres_path 
+  click_link "Comedy" 
+  page.should have_content("1 movie")     # Capybara DSL
+  page.should have_content("Caddyshack")  # Capybara DSL
+end                                                     
+
+
+
+
+
+  
