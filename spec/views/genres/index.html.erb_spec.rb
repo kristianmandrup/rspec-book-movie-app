@@ -1,5 +1,5 @@
 require 'spec_helper'
 
-describe "genre/show.html.erb" do
+describe "genres/index.html.erb" do
   pending "add some examples to (or delete) #{__FILE__}"
 end

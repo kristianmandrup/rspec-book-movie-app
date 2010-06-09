@@ -1,5 +1,5 @@
 CukeApp::Application.routes.draw do |map|
-  resources :products, :movies, :genres
+  resources :movies, :genres
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

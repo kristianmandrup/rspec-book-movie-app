@@ -6,11 +6,12 @@ gem 'sqlite3-ruby', :require => 'sqlite3'
 
 # Bundle gems for certain environments:
 group :test do
-  gem "rspec-rails",        ">= 2.0.0.beta.10", :git => "git://github.com/rspec/rspec-rails.git"
-  gem "rspec",              ">= 2.0.0.beta.10", :git => "git://github.com/rspec/rspec.git"
-  gem "rspec-core",         ">= 2.0.0.beta.10", :git => "git://github.com/rspec/rspec-core.git"
-  gem "rspec-expectations", ">= 2.0.0.beta.10", :git => "git://github.com/rspec/rspec-expectations.git"
-  gem "rspec-mocks",        ">= 2.0.0.beta.10", :git => "git://github.com/rspec/rspec-mocks.git"
+  gem "rspec-rails",        ">= 2.0.0.beta.11", :git => "git://github.com/rspec/rspec-rails.git"
+  gem "rspec-spies",        ">= 1.2.9"
+  gem "rspec",              ">= 2.0.0.beta.11", :git => "git://github.com/rspec/rspec.git"
+  gem "rspec-core",         ">= 2.0.0.beta.11", :git => "git://github.com/rspec/rspec-core.git"
+  gem "rspec-expectations", ">= 2.0.0.beta.11", :git => "git://github.com/rspec/rspec-expectations.git"
+  gem "rspec-mocks",        ">= 2.0.0.beta.11", :git => "git://github.com/rspec/rspec-mocks.git"
   gem 'capybara'
   gem 'database_cleaner'
   gem 'cucumber-rails',     ">=0.3.2"

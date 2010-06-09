@@ -1,17 +1,17 @@
 require 'spec_helper'
 
-describe GenreController do
+describe GenresController do
 
   describe "GET 'index'" do
     it "should be successful" do
-      get 'index'
+      get :index
       response.should be_success
     end
   end
 
   describe "GET 'show'" do
     it "should be successful" do
-      get 'show'
+      get :show, :id => 1
       response.should be_success
     end
   end

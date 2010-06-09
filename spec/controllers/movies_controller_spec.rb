@@ -4,7 +4,7 @@ describe MoviesController do
 
   describe "GET 'index'" do
     it "should be successful" do
-      get 'index'
+      get 'index' 
       response.should be_success
     end
   end

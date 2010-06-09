@@ -180,7 +180,7 @@ end
 
 ## Create 'Comedy' Genre in Database
 
-<pre><code>$ rails c
+<pre><code>$ $ RAILS_ENV=test rails c
 > Genre.create(name:"Comedy")
 > exit
 </code></pre>
